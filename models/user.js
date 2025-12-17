@@ -5,7 +5,11 @@ const emailSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-    }
+    },
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
 }, { timestamps: true } );
 
 const User = mongoose.model("user", emailSchema);
