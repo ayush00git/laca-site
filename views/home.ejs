@@ -1,347 +1,336 @@
-<% 
-// MOCK DATA: In your real app, pass this array from your backend (Node.js)
-// Example: res.render('register', { subjects: dbData });
-
-const subjects = [
-    { code: 'SA-201', name: 'National Cadet Corps (NCC)', seats: 100 },
-    { code: 'SA-202', name: 'National Service Scheme (NSS)', seats: 45 }, 
-    { code: 'SA-203', name: 'Yoga and Meditation', seats: 0 }, // Example of a full course
-    { code: 'SA-204', name: 'Sports Activities', seats: 88 },
-    { code: 'SA-205', name: 'Prayas', seats: 12 }, // Low seats example
-    { code: 'SA-206', name: 'Martial Arts', seats: 100 },
-    { code: 'SA-207', name: 'Music, Dance, and Dramatics', seats: 100 },
-    { code: 'SA-208', name: 'Social Service and Discipline', seats: 100 },
-    { code: 'SA-209', name: 'Photography and Creative Art', seats: 100 }
-];
-%>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Activity Registration - NIT Hamirpur</title>
+    <title>Registration | HackOnHills</title>
     <style>
-        /* --- CSS VARIABLES & RESET --- */
         :root {
-            --primary-maroon: #781316;
-            --secondary-blue: #002845;
-            --text-color: #333;
-            --bg-color: #f4f4f4;
-            --card-bg: #ffffff;
-            --border-color: #ddd;
+            --primary: #2563eb;
+            --dark-bg: #060010;
+            --light-text: #f8fafc;
+            --danger: #ef4444;
+            --success: #22c55e;
+        }
+        
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body { margin: 0; padding: 0; display: flex; height: 100vh; overflow: hidden; }
+
+        /* --- LEFT SIDE: FORM (60%) --- */
+        .form-section {
+            flex: 6;
+            padding: 40px;
+            overflow-y: auto;
+            background-color: #ffffff;
+            position: relative;
         }
 
-        /* High Contrast Variables */
-        body.high-contrast {
-            --primary-maroon: #000000;
-            --secondary-blue: #333333;
-            --text-color: #ffffff;
-            --bg-color: #121212;
-            --card-bg: #000000;
-            --border-color: #ffffff;
+        .form-container { max-width: 600px; margin: 0 auto; }
+        
+        h1 { color: #333; margin-bottom: 30px; border-bottom: 2px solid var(--primary); display: inline-block; padding-bottom: 5px; }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #4b5563; }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            background: #f8fafc;
+            transition: border 0.2s;
         }
 
-        body.high-contrast input, 
-        body.high-contrast select {
-            background-color: #333;
-            color: #fff;
-            border: 1px solid #fff;
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fff;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-
-        body { background-color: var(--bg-color); color: var(--text-color); transition: background 0.3s, color 0.3s; }
-
-        /* --- TOP ACCESSIBILITY BAR --- */
-        .top-bar {
-            background-color: var(--secondary-blue);
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
             color: white;
-            padding: 5px 20px;
-            font-size: 0.85rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+        button:hover { background-color: #1d4ed8; }
+        button:disabled { background-color: #94a3b8; cursor: not-allowed; }
+
+        /* Notification Alert Styles */
+        #alert-box {
+            display: none;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        .alert-success { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .alert-error { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+        /* --- RIGHT SIDE: SEATS INFO (40%) --- */
+        .info-section {
+            flex: 4;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            padding: 40px;
+            overflow-y: auto;
+            border-left: 1px solid #333;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+        }
+
+        .info-header { margin-bottom: 30px; text-align: center; }
+        .info-header h2 { margin: 0; font-size: 24px; color: #fff; }
+        .info-header p { color: #94a3b8; font-size: 14px; }
+
+        .seat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .access-tools a {
-            color: white;
-            text-decoration: none;
-            margin-right: 15px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .access-tools a:hover { text-decoration: underline; }
-
-        /* --- MAIN HEADER --- */
-            .main-header {
-                background-color: var(--primary-maroon);
-              display: flex;
-               justify-content: center;
-               align-items: center;
-                padding: 15px 0;
-            }
-
-            .logo-section {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                
-            }
-
-            .nith-logo {
-                height: 80px;      /* adjust as needed */
-                width: auto;
-            }
-
-
-        .header-text h1 { font-size: 1.8rem; color: white; margin-bottom: 5px; }
-        .header-text h2 { font-size: 1.2rem; color: #f0f0f0; font-weight: normal; }
-
-        /* --- NAVIGATION BAR --- */
-        .nav-bar {
-            background-color: var(--secondary-blue);
-            padding: 10px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
+        .subject-info { display: flex; flex-direction: column; }
+        .subject-code { font-weight: bold; color: var(--primary); font-size: 14px; }
+        .subject-name { font-size: 13px; color: #cbd5e1; }
+        .seat-count { text-align: right; font-weight: bold; font-size: 18px; }
+        .seat-label { font-size: 10px; color: #64748b; display: block; }
         
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            gap: 25px;
-            padding: 0 20px;
+        .low-seats { color: var(--danger); }
+        .good-seats { color: var(--success); }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column-reverse; height: auto; overflow: auto; }
+            .info-section { padding: 20px; }
         }
-
-        .nav-bar a { color: white; text-decoration: none; font-size: 0.95rem; text-transform: uppercase; }
-        .nav-bar a:hover { color: #eeba30; }
-
-        /* --- FORM CONTAINER --- */
-        .container {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
-        .form-card {
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border: 1px solid var(--border-color);
-        }
-
-        .form-header {
-            text-align: center;
-            margin-bottom: 25px;
-            border-bottom: 2px solid var(--primary-maroon);
-            padding-bottom: 10px;
-        }
-
-        /* IMPORTANT NOTE STYLE */
-        .note-box {
-            background-color: #ffeaea;
-            border: 1px solid #ff4d4d;
-            color: #b30000;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-            line-height: 1.4;
-        }
-
-        body.high-contrast .note-box {
-            background-color: #330000;
-            color: #ffcccc;
-            border: 1px solid #ffcccc;
-        }
-
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
-        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
-        
-        #rollno, #email { text-transform: lowercase; }
-
-        /* Style for disabled options in some browsers */
-        option:disabled {
-            background-color: #eee;
-            color: #999;
-            font-style: italic;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            background-color: var(--primary-maroon);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .btn-submit:hover { background-color: #5a0e10; }
-
-        .error-msg { color: red; font-size: 0.85rem; margin-top: 5px; display: none; }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="access-tools">
-            <a href="javascript:void(0)" onclick="resizeText(1)">A+</a>
-            <a href="javascript:void(0)" onclick="resizeText(-1)">A-</a>
-            <a href="javascript:void(0)" onclick="toggleContrast()">&#9680; Toggle Contrast</a>
-            <a href="javascript:void(0)" onclick="resetView()">&#8635; Reset</a>
-        </div>
-    </div>
+    <% 
+        const branches = [
+            'Computer Science and Engineering', 
+            'Dual CSE', 
+            'Electrical Engineering', 
+            'Electronics and Communication Engineering', 
+            'Dual ECE', 
+            'Mechanical Engineering', 
+            'Mathematics and Computing', 
+            'Chemical Engineering', 
+            'Engineering Physics', 
+            'Materials Science and Engineering', 
+            'Civil Engineering'
+        ];
 
-<header class="main-header">
-    <div class="logo-section">
-        <img 
-            src="/images/nith-logo.png" 
-            alt="National Institute of Technology Hamirpur Logo"
-            class="nith-logo"
-        />
-    </div>
-</header>
+        // Mapping just for display on the Right Sidebar (User Experience)
+        const subjectNames = {
+            'SA-201': 'National Cadet Corps (NCC)',
+            'SA-202': 'National Service Scheme (NSS)', 
+            'SA-203': 'Yoga and Meditation',
+            'SA-204': 'Sports Activities',
+            'SA-205': 'Prayas', 
+            'SA-206': 'Martial Arts',
+            'SA-207': 'Music, Dance, and Dramatics',
+            'SA-208': 'Social Service and Discipline',
+            'SA-209': 'Photography and Creative Art',
+        };
+        const subjectCodes = Object.keys(subjectNames); 
+    %>
 
+    <div class="form-section">
+        <div class="form-container">
+            <h1>Student Registration</h1>
+            
+            <div id="alert-box"></div>
 
-    <nav class="nav-bar">
-        <div class="nav-container">
-            <a href="#">Contact 9015048xxx for enquiry or email us at xxxx@nith.ac.in</a>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="form-card">
-            <div class="form-header">
-                <h2>Student Activity Registration</h2>
-                <p>Please fill your details for LA/CA Allocation</p>
-            </div>
-
-            <form id="regForm" onsubmit="handleFormSubmit(event)">
+            <form id="regForm">
                 
                 <div class="form-group">
-                    <label for="email">Institute Email ID</label>
-                    <input type="email" id="email" name="email" placeholder="24abcXXX@nith.ac.in" required>
-                    <div id="emailError" class="error-msg">Email must follow the format 24abcXXX@nith.ac.in</div>
+                    <label>Full Name</label>
+                    <input type="text" name="name" id="name" required placeholder="Enter your full name">
                 </div>
 
                 <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    <label>College Email</label>
+                    <input type="email" name="email" id="email" required placeholder="rollno@college.edu">
+                </div>
+
+                <div class="form-group" style="display: flex; gap: 20px;">
+                    <div style="flex: 1;">
+                        <label>Gender</label>
+                        <select name="gender" id="gender" required>
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label>Roll Number</label>
+                        <input type="text" name="rollNumber" id="rollNumber" required placeholder="23MI..." style="text-transform: uppercase;">
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="rollno">Roll Number</label>
-                    <input type="text" id="rollno" name="rollno" placeholder="24abcXXX" maxlength="8" required>
-                    <div id="rollError" class="error-msg">Roll Number must start with 24, followed by Branch (3 letters) and ID (3 digits).</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="gender">Gender</label>
-                    <select id="gender" name="gender" required>
-                        <option value="">Select Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
+                    <label>Branch</label>
+                    <select name="branch" id="branch" required>
+                        <option value="">Select your Branch</option>
+                        <% branches.forEach(branch => { %>
+                            <option value="<%= branch %>"><%= branch %></option>
+                        <% }) %>
                     </select>
                 </div>
 
-                <div class="note-box">
-                    <strong>Note:</strong> Students who are already in <b>NCC</b> or <b>Dramatics/Music</b> must select their respective subject from the list below.
-                </div>
-
                 <div class="form-group">
-                    <label for="subject">Select Activity (LA/CA)</label>
-                    <select id="subject" name="subject" required>
-                        <option value="">-- Select Course --</option>
-                        
-                        <% subjects.forEach(function(sub) { %>
-                            <% if (sub.seats > 0) { %>
-                                <option value="<%= sub.code %>">
-                                    <%= sub.code %>: <%= sub.name %> [<%= sub.seats %> seats left]
-                                </option>
-                            <% } else { %>
-                                <option value="<%= sub.code %>" disabled>
-                                    <%= sub.code %>: <%= sub.name %> (SEATS FULL)
-                                </option>
-                            <% } %>
-                        <% }); %>
-
+                    <label>Activity Code</label>
+                    <select name="subjectCode" id="subjectCode" required>
+                        <option value="">Select Code...</option>
+                        <% subjectCodes.forEach((code) => { %>
+                            <option value="<%= code %>"><%= code %></option>
+                        <% }) %>
                     </select>
                 </div>
 
-                <button type="submit" class="btn-submit">Submit Registration</button>
+                <button type="submit" id="submitBtn">Confirm Seat</button>
             </form>
         </div>
     </div>
 
+    <div class="info-section">
+        <div class="info-header">
+            <h2>Live Availability</h2>
+            <p>Real-time updates. Max 100 per subject.</p>
+        </div>
+        <div id="seats-container">
+            <p style="text-align: center; color: #666;">Loading seat data...</p>
+        </div>
+    </div>
+
     <script>
-        // --- Accessibility Functions ---
-        let currentZoom = 1;
+        // --- PART 1: FORM HANDLING (AJAX) ---
+        const form = document.getElementById('regForm');
+        const alertBox = document.getElementById('alert-box');
+        const submitBtn = document.getElementById('submitBtn');
 
-        function resizeText(multiplier) {
-            if (multiplier === 1) currentZoom += 0.1;
-            else currentZoom -= 0.1;
-            document.body.style.zoom = currentZoom;
-        }
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Stop page reload
 
-        function toggleContrast() {
-            document.body.classList.toggle('high-contrast');
-        }
+            // 1. Disable button to prevent double clicks
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Processing...";
+            alertBox.style.display = 'none';
 
-        function resetView() {
-            currentZoom = 1;
-            document.body.style.zoom = "1";
-            document.body.classList.remove('high-contrast');
-        }
+            // 2. Gather Data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                rollNumber: document.getElementById('rollNumber').value,
+                gender: document.getElementById('gender').value,
+                branch: document.getElementById('branch').value,
+                subjectCode: document.getElementById('subjectCode').value
+            };
 
-        // --- Form Validation Functions ---
-        function handleFormSubmit(e) {
-            e.preventDefault(); 
+            try {
+                // 3. Send to API
+                const response = await fetch('/form', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
 
-            const email = document.getElementById('email').value;
-            const rollno = document.getElementById('rollno').value;
-            const emailError = document.getElementById('emailError');
-            const rollError = document.getElementById('rollError');
-            
-            let isValid = true;
+                const result = await response.json();
 
-            // 1. Email Regex
-            const emailPattern = /^\d{2}[a-z]{3}\d{3}@nith\.ac\.in$/i;
-            if (!emailPattern.test(email)) {
-                emailError.style.display = 'block';
-                isValid = false;
-            } else {
-                emailError.style.display = 'none';
+                // 4. Handle Result (JSON Message)
+                alertBox.style.display = 'block';
+                alertBox.innerText = result.message; // "Seat confirmed!" or Error msg
+
+                if (response.ok && result.success) {
+                    // Success Case
+                    alertBox.className = 'alert-success';
+                    form.reset(); // Clear the form
+                    // Force an immediate seat update on the right side
+                    updateSeats(); 
+                } else {
+                    // Error Case
+                    alertBox.className = 'alert-error';
+                }
+
+            } catch (err) {
+                alertBox.style.display = 'block';
+                alertBox.innerText = "Network Error. Please try again.";
+                alertBox.className = 'alert-error';
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Confirm Seat";
             }
+        });
 
-            // 2. Roll No Regex
-            const rollPattern = /^\d{2}[a-z]{3}\d{3}$/i;
-            if (!rollPattern.test(rollno)) {
-                rollError.style.display = 'block';
-                isValid = false;
-            } else {
-                rollError.style.display = 'none';
-            }
 
-            if (isValid) {
-                const formData = {
-                    email: email,
-                    name: document.getElementById('name').value,
-                    rollNo: rollno.toUpperCase(), 
-                    gender: document.getElementById('gender').value,
-                    subject: document.getElementById('subject').value
-                };
+        // --- PART 2: LIVE SEATS POLLING ---
+        const subjectNames = <%- JSON.stringify(subjectNames) %>;
 
-                console.log("Submitting:", formData);
-                alert(`Verification link sent to ${email}!`);
-                // e.target.submit(); // Enable this for real submission
+        async function updateSeats() {
+            try {
+                const res = await fetch('/seats');
+                const data = await res.json(); // Expecting array from DB/Cache
+                
+                const container = document.getElementById('seats-container');
+                container.innerHTML = ''; 
+
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<p style="text-align:center">No subject data found.</p>';
+                    return;
+                }
+
+                data.forEach(sub => {
+                    const available = 100 - sub.seatsFilled;
+                    const name = subjectNames[sub.code] || sub.code;
+                    const colorClass = available < 10 ? 'low-seats' : 'good-seats';
+
+                    const html = `
+                        <div class="seat-card">
+                            <div class="subject-info">
+                                <span class="subject-code">${sub.code}</span>
+                                <span class="subject-name">${name}</span>
+                            </div>
+                            <div class="seat-count">
+                                <span class="${colorClass}">${available}</span>
+                                <span class="seat-label">Seats Left</span>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML += html;
+
+                    // Disable dropdown option if full
+                    if (available <= 0) {
+                        const option = document.querySelector(`#subjectCode option[value="${sub.code}"]`);
+                        if(option) {
+                            option.disabled = true;
+                            option.innerText = sub.code + ' (FULL)';
+                        }
+                    }
+                });
+
+            } catch (err) {
+                console.error("Failed to fetch seats", err);
             }
         }
+
+        // Start the polling
+        updateSeats();
+        setInterval(updateSeats, 2000); 
     </script>
 </body>
 </html>
