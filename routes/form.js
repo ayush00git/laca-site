@@ -11,7 +11,7 @@ route.post('/', async(req, res) => {
     const subject = await Subject.findOneAndUpdate(
         { 
             code: subjectCode,
-            seatsFilled: { $lt: 100 }
+            seatsFilled: { $lt: 5 }
         },
         { $inc: { seatsFilled: 1 } },
         { new: true }

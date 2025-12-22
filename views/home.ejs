@@ -295,7 +295,7 @@
                 }
 
                 data.forEach(sub => {
-                    const available = 100 - sub.seatsFilled;
+                    const available = 5 - sub.seatsFilled;
                     const name = subjectNames[sub.code] || sub.code;
                     const colorClass = available < 10 ? 'low-seats' : 'good-seats';
 
