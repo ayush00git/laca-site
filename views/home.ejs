@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration | HackOnHills</title>
+    <title>Registration</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -134,7 +134,6 @@
             'Civil Engineering'
         ];
 
-        // Mapping just for display on the Right Sidebar (User Experience)
         const subjectNames = {
             'SA-201': 'National Cadet Corps (NCC)',
             'SA-202': 'National Service Scheme (NSS)', 
@@ -159,12 +158,12 @@
                 
                 <div class="form-group">
                     <label>Full Name</label>
-                    <input type="text" name="name" id="name" required placeholder="Enter your full name">
+                    <input type="text" name="name" id="name" autocomplete="name" required placeholder="Enter your full name">
                 </div>
 
                 <div class="form-group">
                     <label>College Email</label>
-                    <input type="email" name="email" id="email" required placeholder="rollno@college.edu">
+                    <input type="email" name="email" id="email" autocomplete="email" required placeholder="rollno@college.edu">
                 </div>
 
                 <div class="form-group" style="display: flex; gap: 20px;">
@@ -226,7 +225,7 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault(); // Stop page reload
 
-            // 1. Disable button to prevent double clicks
+            // 1. Disable UI
             submitBtn.disabled = true;
             submitBtn.innerText = "Processing...";
             alertBox.style.display = 'none';
@@ -251,18 +250,17 @@
 
                 const result = await response.json();
 
-                // 4. Handle Result (JSON Message)
+                // 4. Handle Result based on 'success' boolean
                 alertBox.style.display = 'block';
-                alertBox.innerText = result.message; // "Seat confirmed!" or Error msg
+                alertBox.innerText = result.message; 
 
-                if (response.ok && result.success) {
-                    // Success Case
+                if (result.success) {
+                    // Success (Green)
                     alertBox.className = 'alert-success';
-                    form.reset(); // Clear the form
-                    // Force an immediate seat update on the right side
-                    updateSeats(); 
+                    form.reset(); // Clear input fields
+                    updateSeats(); // Force immediate update of sidebar
                 } else {
-                    // Error Case
+                    // Error (Red)
                     alertBox.className = 'alert-error';
                 }
 
@@ -284,7 +282,7 @@
         async function updateSeats() {
             try {
                 const res = await fetch('/seats');
-                const data = await res.json(); // Expecting array from DB/Cache
+                const data = await res.json(); 
                 
                 const container = document.getElementById('seats-container');
                 container.innerHTML = ''; 
@@ -328,9 +326,9 @@
             }
         }
 
-        // Start the polling
+        // Start polling
         updateSeats();
-        setInterval(updateSeats, 2000); 
+        setInterval(updateSeats, 10000); 
     </script>
 </body>
 </html>

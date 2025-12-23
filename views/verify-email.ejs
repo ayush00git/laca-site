@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Status | HackOnHills</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .icon-container {
+            margin-bottom: 20px;
+        }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        /* Dynamic Colors based on Success boolean */
+        .success-bg { background-color: #dcfce7; }
+        .error-bg { background-color: #fee2e2; }
+        
+        .success-icon { color: #166534; font-size: 40px; }
+        .error-icon { color: #991b1b; font-size: 40px; }
+
+        h1 { margin: 0 0 10px 0; color: #333; }
+        p { color: #666; font-size: 16px; line-height: 1.5; }
+
+        .btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 25px;
+            background-color: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .btn:hover { background-color: #1d4ed8; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="icon-container">
+            <div class="icon-circle <%= success ? 'success-bg' : 'error-bg' %>">
+                
+                <% if (success) { %>
+                    <span class="success-icon">✓</span>
+                <% } else { %>
+                    <span class="error-icon">✕</span>
+                <% } %>
+
+            </div>
+        </div>
+
+        <h1><%= success ? 'Confirmed!' : 'Failed' %></h1>
+        
+        <p><%= message %></p>
+
+        <a href="/" class="btn">Return to Home</a>
+    </div>
+
+</body>
+</html>
