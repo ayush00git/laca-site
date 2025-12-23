@@ -39,8 +39,7 @@ const sendEmail = async(token) => {
                                     
                                     <tr>
                                         <td align="center" style="padding: 40px 0 30px 0; background-color: #2563eb;">
-                                            <h1 style="margin: 0; font-size: 24px; color: #ffffff;">Registration Confirmed!</h1>
-                                            <p style="margin: 10px 0 0 0; color: #e0e7ff; font-size: 16px;">HackOnHills 2025</p>
+                                            <h1 style="margin: 0; font-size: 24px; color: #ffffff;">Confirm you registration</h1>
                                         </td>
                                     </tr>
 
@@ -100,14 +99,14 @@ const sendEmail = async(token) => {
                                                     <td align="center" style="padding: 30px 0 10px 0;">
                                                         <a href="${verificationURL}" 
                                                         style="background-color: #22c55e; color: #ffffff; padding: 14px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px; display: inline-block;">
-                                                            Verify Registration
+                                                            Confirm Registration
                                                         </a>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td align="center">
                                                         <p style="font-size: 12px; color: #94a3b8; margin-top: 10px;">
-                                                            Click the button above to confirm your attendance.
+                                                            Click the button above to confirm your registration.
                                                         </p>
                                                     </td>
                                                 </tr>
