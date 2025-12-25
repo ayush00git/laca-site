@@ -10,6 +10,7 @@ const Subject = require("./models/subject");
 // routes
 const formRoute = require("./routes/form");
 const subjectRoute = require("./routes/subject");
+const emailRoute = require("./routes/email");
 
 const { connectToMongoDB } = require("./connection");
 
@@ -29,6 +30,7 @@ app.get('/', (req, res) => {
 })
 app.use('/form', formRoute);
 app.use('/subject', subjectRoute);
+app.use('/email', emailRoute);
 
 app.get('/seats', async(req, res) => {
     try {

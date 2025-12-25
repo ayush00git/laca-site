@@ -13,7 +13,7 @@ const subjectSchema = new Schema({
     },
     maxSeats: {
         type: Number,
-        default: 100,
+        default: 5,
     }
 }, { timestamps: true } );
 

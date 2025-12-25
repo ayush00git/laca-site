@@ -1,7 +1,8 @@
 const express = require("express");
 const route = express.Router();
+const Subject = require("../models/subject");
 
-route.post('/subject', async (req, res) => {
+route.post('/', async (req, res) => {
     const { code } = req.body;
     const sub = new Subject({
         code,

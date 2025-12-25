@@ -13,9 +13,8 @@ const sendEmail = async(token) => {
             pass: process.env.USER_PASS,
         }
     });
-
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const verificationURL = `https://laca-site.vercel.app/form/verify-email?token=${token}`
+    const verificationURL = `${process.env.PROD_URL}/email/verify-email?token=${token}`
     try {
         await transporter.sendMail({
             from: process.env.USER_MAIL,
