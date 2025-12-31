@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Details</title>
+    <link rel="icon" href="/nith.png" type="image/png">
+    <style>
+        :root {
+            /* Palette matching home.ejs */
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent-dark: #0f172a;
+            --accent-hover: #334155;
+            --border-subtle: #cbd5e1;
+            --bg-input: #f8fafc;
+            --danger: #ef4444;
+            --success: #10b981;
+
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--accent-dark);
+        }
+
+        .stats {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        /* Filter Section */
+        .filters-card {
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 24px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .filter-form {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .form-group.search-group {
+            flex: 2;
+            min-width: 250px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--accent-dark);
+            background: #fff;
+        }
+
+        .btn {
+            background-color: var(--accent-dark);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            height: 40px;
+            /* Aligen with inputs */
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-secondary);
+            background: #f1f5f9;
+        }
+
+        /* Table */
+        .table-responsive {
+            overflow-x: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-subtle);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #f8fafc;
+            text-align: left;
+            padding: 14px 16px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-subtle);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            color: var(--text-primary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 99px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .tag-gray {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1>Registered Students</h1>
+                <span class="stats">Total Records: <%= totalCount %></span>
+            </div>
+            <a href="/" class="btn btn-outline" style="text-decoration:none; display:inline-flex; align-items:center;">
+                &larr; Back to Form
+            </a>
+        </header>
+
+        <section class="filters-card">
+            <form action="" method="GET" class="filter-form">
+                <div class="form-group search-group">
+                    <label>Search</label>
+                    <input type="text" name="search" placeholder="Name or Roll Number..."
+                        value="<%= query.search || '' %>">
+                </div>
+
+                <div class="form-group">
+                    <label>Branch</label>
+                    <select name="branch">
+                        <option value="">All Branches</option>
+                        <% const branches=[ 'Computer Science and Engineering' , 'Dual CSE' , 'Electrical Engineering'
+                            , 'Electronics and Communication Engineering' , 'Dual ECE' , 'Mechanical Engineering'
+                            , 'Mathematics and Computing' , 'Chemical Engineering' , 'Engineering Physics'
+                            , 'Materials Science and Engineering' , 'Civil Engineering' ]; branches.forEach(b=> { %>
+                            <option value="<%= b %>" <%=query.branch===b ? 'selected' : '' %>><%= b %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Course</label>
+                    <select name="subjectCode">
+                        <option value="">All Courses</option>
+                        <% const subjects=['SA-201', 'SA-202' , 'SA-203'
+                            ,'SA-204','SA-205','SA-206','SA-207','SA-208','SA-209', 'SA-210' , 'SA-211' , 'SA-212' ];
+                            subjects.forEach(s=> { %>
+                            <option value="<%= s %>" <%=query.subjectCode===s ? 'selected' : '' %>><%= s %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Sort By</label>
+                    <select name="sort">
+                        <option value="">Oldest First</option>
+                        <option value="name_asc" <%=query.sort==='name_asc' ? 'selected' : '' %>>Name (A-Z)</option>
+                        <option value="roll_asc" <%=query.sort==='roll_asc' ? 'selected' : '' %>>Roll No (Asc)</option>
+                        <option value="branch" <%=query.sort==='branch' ? 'selected' : '' %>>Branch</option>
+                        <option value="subject" <%=query.sort==='subject' ? 'selected' : '' %>>Course</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn">Apply Filters</button>
+                <% if(Object.keys(query).length> 0) { %>
+                    <a href="?" class="btn btn-outline"
+                        style="text-decoration:none; display:flex; align-items:center; justify-content:center;">Clear</a>
+                    <% } %>
+            </form>
+        </section>
+
+        <section class="table-responsive">
+            <% if (details.length> 0) { %>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Roll Number</th>
+                            <th>Email</th>
+                            <th>Gender</th>
+                            <th>Branch</th>
+                            <th>Course</th>
+                            <th>Registered At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% details.forEach(student=> { %>
+                            <tr>
+                                <td style="font-weight: 600;">
+                                    <%= student.name %>
+                                </td>
+                                <td style="font-family: monospace; letter-spacing: 0.5px;">
+                                    <%= student.rollNumber %>
+                                </td>
+                                <td>
+                                    <%= student.email %>
+                                </td>
+                                <td>
+                                    <%= student.gender %>
+                                </td>
+                                <td>
+                                    <%= student.branch %>
+                                </td>
+                                <td>
+                                    <span class="tag tag-gray">
+                                        <%= student.subjectCode %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <%= new Date(student.createdAt).toLocaleString('en-IN', { dateStyle: 'medium' ,
+                                        timeStyle: 'short' }) %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+                <% } else { %>
+                    <div class="empty-state">
+                        <h3>No students found</h3>
+                        <p>Try adjusting your search or filters.</p>
+                    </div>
+                    <% } %>
+        </section>
+    </div>
+</body>
+
+</html>
