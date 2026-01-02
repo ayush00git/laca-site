@@ -58,6 +58,19 @@
             color: var(--text-primary);
         }
 
+
+        /* Scrollbar Hiding */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        * {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
         /* --- LEFT SIDE: FORM SECTION (60%) --- */
         .form-section {
             flex: 6;
@@ -74,16 +87,16 @@
 
         /* The "Floating" Card */
         .form-container {
-            background-color: var(--bg-card);
-            padding: 40px 50px;
-            border-radius: 24px;
-            box-shadow: var(--shadow-card);
+            /* background-color: var(--bg-card); */
+            /* removed for blending */
+            padding: 20px;
+            /* border-radius: 24px; */
+            /* box-shadow: var(--shadow-card); */
             max-width: 580px;
             width: 100%;
             display: flex;
             flex-direction: column;
-            border: 1px solid #fff;
-            /* Subtle highlight */
+            /* border: 1px solid #fff; */
         }
 
         header {
@@ -454,6 +467,12 @@
                         placeholder="rollno@nith.ac.in">
                 </div>
 
+                <div class="form-group">
+                    <label for="mobileNum">Mobile Number</label>
+                    <input type="tel" name="mobileNum" id="mobileNum" autocomplete="tel" required
+                        placeholder="Verified Mobile Number" pattern="[0-9]{10}">
+                </div>
+
                 <div class="row form-group">
                     <div class="col">
                         <label for="gender">Gender</label>
@@ -518,7 +537,9 @@
 
     <script>
         // --- CONFIGURATION ---
-        const MAX_SEATS = 90;
+        // --- CONFIGURATION ---
+        const DEFAULT_MAX_SEATS = 120;
+        const SA205_MAX_SEATS = 60;
 
         const branches = [
             'Computer Science and Engineering',
@@ -545,9 +566,10 @@
             'SA-207': 'Music, Dance, and Dramatics',
             'SA-208': 'Social Service and Discipline',
             'SA-209': 'Photography and Creative Art',
-            'SA-210': 'Horticulture',
-            'SA-211': 'Swachh Bharat (Clean India)',
-            'SA-212': 'Nasha Mukti & Stress Mgmt'
+            'SA-210': 'Swachh Bharat Abhiyan',
+            'SA-211': 'Nasha Mukti Abhiyan',
+            'SA-212': 'Horticulture',
+            'SA-213': 'Viksit Bharat'
         };
 
         // --- INITIALIZATION ---
@@ -603,11 +625,14 @@
 
             Object.entries(subjectNames).forEach(([code, name], index) => {
                 const filled = seatData[code] || 0;
-                const available = MAX_SEATS - filled;
+
+                // Determine limit
+                const limit = (code === 'SA-205') ? SA205_MAX_SEATS : DEFAULT_MAX_SEATS;
+                const available = limit - filled;
 
                 let countColor = 'text-neutral';
                 if (available < 10) countColor = 'text-danger';
-                else if (available > (MAX_SEATS / 2)) countColor = 'text-success';
+                else if (available > (limit / 2)) countColor = 'text-success';
 
                 const card = document.createElement('div');
                 card.className = 'seat-card';
@@ -620,7 +645,7 @@
                         <span class="subject-name" title="${name}">${name}</span>
                     </div>
                     <div class="seat-status">
-                        <span class="seat-count ${countColor}">${available}</span>
+                        <span class="seat-count ${countColor}">${available} / ${limit}</span>
                         <span class="seat-label">Left</span>
                     </div>
                 `;
@@ -658,7 +683,8 @@
                 rollNumber: document.getElementById('rollNumber').value,
                 gender: document.getElementById('gender').value,
                 branch: document.getElementById('branch').value,
-                subjectCode: document.getElementById('subjectCode').value
+                subjectCode: document.getElementById('subjectCode').value,
+                mobileNum: document.getElementById('mobileNum').value
             };
 
             try {

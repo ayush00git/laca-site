@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Subjects</title>
+    <link rel="icon" href="/nith.png" type="image/png">
+    <style>
+        :root {
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent-dark: #0f172a;
+            --accent-hover: #334155;
+            --border-subtle: #cbd5e1;
+            --bg-input: #f8fafc;
+            --danger: #ef4444;
+            --success: #10b981;
+            --shadow-card: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-card);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 0 24px 0;
+            color: var(--accent-dark);
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            font-size: 15px;
+            background: var(--bg-input);
+            color: var(--text-primary);
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--accent-dark);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+            text-align: center;
+        }
+
+        .alert-success {
+            background-color: #ecfdf5;
+            color: #047857;
+            border: 1px solid #d1fae5;
+        }
+
+        .alert-error {
+            background-color: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fee2e2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1>Add New Subject</h1>
+        <div id="alert-box" class="alert"></div>
+        <form id="subjectForm">
+            <div class="form-group">
+                <label for="code">Subject Code</label>
+                <select id="code" name="code" required>
+                    <option value="">Select Code...</option>
+                    <% subjectCodes.forEach(code=> { %>
+                        <option value="<%= code %>">
+                            <%= code %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="maxSeats">Max Seats</label>
+                <input type="number" id="maxSeats" name="maxSeats" value="120" required>
+            </div>
+            <button type="submit" id="submitBtn">Add Subject</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('subjectForm');
+        const alertBox = document.getElementById('alert-box');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Adding...";
+            alertBox.style.display = 'none';
+
+            const formData = {
+                code: document.getElementById('code').value,
+                maxSeats: document.getElementById('maxSeats').value
+            };
+
+            try {
+                // Get the base path from window.location since we are serving this under a prefix
+                // Actually the form submission needs to go to the current path '/' relative to this router
+                // If served at /PRIVATE_URL/subject/, POST /PRIVATE_URL/subject/ is correct.
+                // So fetch('./') or fetch('') or fetch(window.location.href)
+                const response = await fetch('', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                alertBox.style.display = 'block';
+                if (response.ok) {
+                    alertBox.className = 'alert alert-success';
+                    alertBox.innerText = result.message || "Subject added successfully!";
+                    form.reset();
+                } else {
+                    alertBox.className = 'alert alert-error';
+                    alertBox.innerText = result.message || "Failed to add subject.";
+                }
+            } catch (err) {
+                alertBox.style.display = 'block';
+                alertBox.className = 'alert alert-error';
+                alertBox.innerText = "Connection error.";
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Add Subject";
+            }
+        });
+    </script>
+</body>
+
+</html>

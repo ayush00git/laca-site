@@ -214,9 +214,17 @@
                 <h1>Registered Students</h1>
                 <span class="stats">Total Records: <%= totalCount %></span>
             </div>
-            <a href="/" class="btn btn-outline" style="text-decoration:none; display:inline-flex; align-items:center;">
-                &larr; Back to Form
-            </a>
+            <div style="display: flex; gap: 10px;">
+                <a href="<%= baseUrl %>/export<%= Object.keys(query).length ? '?' + new URLSearchParams(query).toString() : '' %>"
+                    target="_blank" class="btn"
+                    style="text-decoration:none; display:inline-flex; align-items:center; background-color: var(--success);">
+                    Export to Excel
+                </a>
+                <a href="/" class="btn btn-outline"
+                    style="text-decoration:none; display:inline-flex; align-items:center;">
+                    &larr; Back to Form
+                </a>
+            </div>
         </header>
 
         <section class="filters-card">
@@ -246,8 +254,8 @@
                     <select name="subjectCode">
                         <option value="">All Courses</option>
                         <% const subjects=['SA-201', 'SA-202' , 'SA-203'
-                            ,'SA-204','SA-205','SA-206','SA-207','SA-208','SA-209', 'SA-210' , 'SA-211' , 'SA-212' ];
-                            subjects.forEach(s=> { %>
+                            ,'SA-204','SA-205','SA-206','SA-207','SA-208','SA-209', 'SA-210' , 'SA-211' , 'SA-212'
+                            , 'SA-213' ]; subjects.forEach(s=> { %>
                             <option value="<%= s %>" <%=query.subjectCode===s ? 'selected' : '' %>><%= s %>
                             </option>
                             <% }) %>
@@ -281,6 +289,7 @@
                             <th>Name</th>
                             <th>Roll Number</th>
                             <th>Email</th>
+                            <th>Mobile Number</th>
                             <th>Gender</th>
                             <th>Branch</th>
                             <th>Course</th>
@@ -298,6 +307,9 @@
                                 </td>
                                 <td>
                                     <%= student.email %>
+                                </td>
+                                <td>
+                                    <%= student.mobileNum %>
                                 </td>
                                 <td>
                                     <%= student.gender %>
