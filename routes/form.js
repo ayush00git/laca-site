@@ -8,20 +8,20 @@ dotenv.config();
 const jwt = require("jsonwebtoken");
 
 route.post('/submit', async(req, res) => {
-    const { name, email, rollNumber, gender, branch, subjectCode } = req.body;
-    if( !name || !email || !rollNumber || !gender || !branch || !subjectCode ) {
+    const { name, email, rollNumber, mobileNum, gender, branch, subjectCode } = req.body;
+    if( !name || !email || !rollNumber || !gender || !branch || !subjectCode || !mobileNum ) {
         return res.status(400).json({
             success: false,
-            message: "All the fields are required"
+            message: "All the fields are required",
         });
-    }
+    };
 
     if( !email.endsWith('@nith.ac.in') ) {
         return res.status(400).json({
             success: false,
             message: "Only college emails are allowed",
-        })
-    }
+        });
+    };
 
     const existingUser = await Form.findOne({ email });
     if( existingUser ) {
@@ -29,18 +29,18 @@ route.post('/submit', async(req, res) => {
             success: false,
             message: `${existingUser.email} is already registered to ${existingUser.subjectCode}`
         });
-    }
+    };
     
     const subject = await Subject.findOne({ code: subjectCode });
     if( subject.seatsFilled >= subject.maxSeats) {
         return res.status(400).json({ 
             success: false,
-            message: `Seats for this subject are already reserved`,
+            message: `All the Seats for this subject have been reserved`,
         });
-    }
+    };
 
     const token = jwt.sign(
-        { name, email, rollNumber, branch, subjectCode, gender },
+        { name, email, rollNumber, mobileNum, branch, subjectCode, gender },
         process.env.JWT_SECRET,
         {expiresIn: '24h'},
     )
@@ -55,7 +55,7 @@ route.post('/submit', async(req, res) => {
         console.log(`Email sent to ${email}`);
         return res.status(200).json({ 
                 success: true,
-                message: `Check your inbox for reserving the seat`,
+                message: `Check your email inbox for confirming the seat`,
         });
     } catch(error) {
         console.log(`${error}`);
@@ -63,8 +63,7 @@ route.post('/submit', async(req, res) => {
             success: false,
             message: `Internal server error`,
         })
-    }
-
+    };
 });
 
 module.exports = route;

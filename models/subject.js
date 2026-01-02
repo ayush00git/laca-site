@@ -1,5 +1,5 @@
 const { model, Schema } = require("mongoose");
-const subjectCode = ['SA-201', 'SA-202', 'SA-203','SA-204','SA-205','SA-206','SA-207','SA-208','SA-209', 'SA-210', 'SA-211', 'SA-212'];
+const subjectCode = ['SA-201', 'SA-202', 'SA-203','SA-204','SA-205','SA-206','SA-207','SA-208','SA-209', 'SA-210', 'SA-211', 'SA-212', 'SA-213'];
 
 const subjectSchema = new Schema({
     code: {
@@ -13,8 +13,8 @@ const subjectSchema = new Schema({
     },
     maxSeats: {
         type: Number,
-        default: 90,
-    }
+        default: 120,
+    },
 }, { timestamps: true } );
 
 const Subject = model("subject", subjectSchema);

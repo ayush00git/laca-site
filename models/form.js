@@ -1,6 +1,6 @@
 const { model, Schema } = require("mongoose");
 const branches = ['Computer Science and Engineering', 'Dual CSE', 'Electrical Engineering', 'Electronics and Communication Engineering', 'Dual ECE', 'Mechanical Engineering', 'Mathematics and Computing', 'Chemical Engineering', 'Engineering Physics', 'Materials Science and Engineering', 'Civil Engineering'];
-const Subjects = ['SA-201', 'SA-202', 'SA-203','SA-204','SA-205','SA-206','SA-207','SA-208','SA-209', 'SA-210', 'SA-211', 'SA-212'];
+const Subjects = ['SA-201', 'SA-202', 'SA-203','SA-204','SA-205','SA-206','SA-207','SA-208','SA-209', 'SA-210', 'SA-211', 'SA-212', 'SA-213'];
 
 const formSchema = new Schema({
     name: {
@@ -9,6 +9,11 @@ const formSchema = new Schema({
     },
     email: {
         type: String,
+        required: true,
+        unique: true,
+    },
+    mobileNum: {
+        type: Number,
         required: true,
         unique: true,
     },
