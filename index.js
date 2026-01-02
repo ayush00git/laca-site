@@ -34,7 +34,7 @@ app.use('/form', formRoute);
 app.use('/subject', subjectRoute);
 app.use('/email', emailRoute);
 app.use(`/${process.env.PRIVATE_URL}`, detailsRoute);
-
+  
 app.get('/seats', async(req, res) => {
     try {
         const seats = await Subject.find({});
