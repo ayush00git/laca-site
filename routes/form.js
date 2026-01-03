@@ -38,25 +38,40 @@ route.post('/submit', async(req, res) => {
             message: `All the Seats for this subject have been reserved`,
         });
     };
-
-    const token = jwt.sign(
-        { name, email, rollNumber, mobileNum, branch, subjectCode, gender },
-        process.env.JWT_SECRET,
-        {expiresIn: '24h'},
-    )
-
     try {
-        if(!sendEmail(token)) {
-            return res.status(400).json({ 
-                success: false,
-                message: `Error sending the email`,
-            });
-        }
-        console.log(`Email sent to ${email}`);
-        return res.status(200).json({ 
-                success: true,
-                message: `Check your email inbox for confirming the seat`,
+        const form = new Form({
+            name,
+            email,
+            rollNumber,
+            mobileNum,
+            gender,
+            branch,
+            subjectCode,
         });
+
+        await form.save();
+        return res.status(200).json({
+            success: true,
+            message: `Your seat has been confirmed for ${subjectCode}`,
+        });
+    // const token = jwt.sign(
+    //     { name, email, rollNumber, mobileNum, branch, subjectCode, gender },
+    //     process.env.JWT_SECRET,
+    //     {expiresIn: '24h'},
+    // )
+
+    // try {
+    //     if(!sendEmail(token)) {
+    //         return res.status(400).json({ 
+    //             success: false,
+    //             message: `Error sending the email`,
+    //         });
+    //     }
+    //     console.log(`Email sent to ${email}`);
+    //     return res.status(200).json({ 
+    //             success: true,
+    //             message: `Check your email inbox for confirming the seat`,
+    //     });
     } catch(error) {
         console.log(`${error}`);
         return res.status(500).json({

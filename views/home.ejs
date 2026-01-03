@@ -326,13 +326,6 @@
                 <h1>Registration of LA/CA courses</h1>
                 <p class="subtitle">Semester 2026</p>
 
-                <!-- Institute Notice -->
-                <div
-                    style="background-color: #fef2f2; border-left: 4px solid #dc2626; color: #991b1b; padding: 16px 20px; border-radius: 0 8px 8px 0; margin-top: 20px; font-size: 15px; font-weight: 600; text-align: left;">
-                    <span style="font-weight: 800; font-size: 18px; margin-right: 8px;">⚠</span>
-                    Due to notice from the Institute the site will not be open for registrations till further notice
-                </div>
-
                 <div class="notice-box">
                     <span style="font-weight: 800; font-size: 16px; margin-right: 8px;">!</span>
                     <span>Note: NCC students are strictly required to enroll in the <strong>NCC (SA-201)</strong> course
@@ -346,27 +339,26 @@
 
                 <div class="form-group">
                     <label for="name">Full Name</label>
-                    <input type="text" name="name" id="name" autocomplete="name" required placeholder="Your Name"
-                        disabled>
+                    <input type="text" name="name" id="name" autocomplete="name" required placeholder="Your Name">
                 </div>
 
                 <div class="form-group">
                     <label for="email">College Email</label>
                     <input type="email" name="email" id="email" autocomplete="email" required
-                        placeholder="rollno@nith.ac.in" disabled>
+                        placeholder="rollno@nith.ac.in">
                 </div>
 
                 <div class="form-group">
                     <label for="mobileNum">Mobile Number</label>
                     <input type="tel" name="mobileNum" id="mobileNum" autocomplete="tel" required
-                        placeholder="Verified Mobile Number" pattern="[0-9]{10}" disabled>
+                        placeholder="Verified Mobile Number" pattern="[0-9]{10}">
                 </div>
 
                 <div class="row form-group">
                     <div class="col">
                         <label for="gender">Gender</label>
                         <div class="select-wrapper">
-                            <select name="gender" id="gender" required disabled>
+                            <select name="gender" id="gender" required>
                                 <option value="">Select...</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
@@ -377,14 +369,14 @@
                     <div class="col">
                         <label for="rollNumber">Roll Number</label>
                         <input type="text" name="rollNumber" id="rollNumber" required placeholder="24BCS..."
-                            style="text-transform: uppercase;" disabled>
+                            style="text-transform: uppercase;">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="branch">Branch</label>
                     <div class="select-wrapper">
-                        <select name="branch" id="branch" required disabled>
+                        <select name="branch" id="branch" required>
                             <option value="">Select your Branch</option>
                             <!-- Options populated by JS -->
                         </select>
@@ -394,14 +386,14 @@
                 <div class="form-group">
                     <label for="subjectCode">Activity Selection</label>
                     <div class="select-wrapper">
-                        <select name="subjectCode" id="subjectCode" required disabled>
+                        <select name="subjectCode" id="subjectCode" required>
                             <option value="">Select Activity...</option>
                             <!-- Options populated by JS -->
                         </select>
                     </div>
                 </div>
 
-                <button type="submit" id="submitBtn" disabled>Confirm Registration</button>
+                <button type="submit" id="submitBtn">Confirm Registration</button>
             </form>
 
             <!-- Footer Section -->
