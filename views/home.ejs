@@ -286,6 +286,105 @@
             border: 1px solid #fee2e2;
         }
 
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            animation: slideUp 0.3s ease;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .modal-icon {
+            font-size: 32px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .modal-body {
+            background-color: #fef2f2;
+            border-left: 4px solid #dc2626;
+            color: #991b1b;
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .modal-close-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent-dark);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
 
 
         /* Mobile Responsive */
@@ -319,6 +418,20 @@
 
 <body>
 
+    <!-- Modal Popup -->
+    <div class="modal-overlay" id="noticeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-icon">⚠️</span>
+                <h3 class="modal-title">Important Notice</h3>
+            </div>
+            <div class="modal-body">
+                Due to notice from the Institute the site will not be open for registrations till further notice
+            </div>
+            <button class="modal-close-btn" onclick="closeModal()">I Understand</button>
+        </div>
+    </div>
+
     <!-- Left Side: Registration Form -->
     <div class="form-section">
         <div class="form-container">
@@ -338,26 +451,27 @@
 
                 <div class="form-group">
                     <label for="name">Full Name</label>
-                    <input type="text" name="name" id="name" autocomplete="name" required placeholder="Your Name">
+                    <input type="text" name="name" id="name" autocomplete="name" required placeholder="Your Name"
+                        disabled>
                 </div>
 
                 <div class="form-group">
                     <label for="email">College Email</label>
                     <input type="email" name="email" id="email" autocomplete="email" required
-                        placeholder="rollno@nith.ac.in">
+                        placeholder="rollno@nith.ac.in" disabled>
                 </div>
 
                 <div class="form-group">
                     <label for="mobileNum">Mobile Number</label>
                     <input type="tel" name="mobileNum" id="mobileNum" autocomplete="tel" required
-                        placeholder="Verified Mobile Number" pattern="[0-9]{10}">
+                        placeholder="Verified Mobile Number" pattern="[0-9]{10}" disabled>
                 </div>
 
                 <div class="row form-group">
                     <div class="col">
                         <label for="gender">Gender</label>
                         <div class="select-wrapper">
-                            <select name="gender" id="gender" required>
+                            <select name="gender" id="gender" required disabled>
                                 <option value="">Select...</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
@@ -368,14 +482,14 @@
                     <div class="col">
                         <label for="rollNumber">Roll Number</label>
                         <input type="text" name="rollNumber" id="rollNumber" required placeholder="24BCS..."
-                            style="text-transform: uppercase;">
+                            style="text-transform: uppercase;" disabled>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="branch">Branch</label>
                     <div class="select-wrapper">
-                        <select name="branch" id="branch" required>
+                        <select name="branch" id="branch" required disabled>
                             <option value="">Select your Branch</option>
                             <!-- Options populated by JS -->
                         </select>
@@ -385,14 +499,14 @@
                 <div class="form-group">
                     <label for="subjectCode">Activity Selection</label>
                     <div class="select-wrapper">
-                        <select name="subjectCode" id="subjectCode" required>
+                        <select name="subjectCode" id="subjectCode" required disabled>
                             <option value="">Select Activity...</option>
                             <!-- Options populated by JS -->
                         </select>
                     </div>
                 </div>
 
-                <button type="submit" id="submitBtn">Confirm Registration</button>
+                <button type="submit" id="submitBtn" disabled>Confirm Registration</button>
             </form>
 
             <!-- Footer Section -->
@@ -456,6 +570,16 @@
             opt.value = code;
             opt.textContent = `${code} - ${name}`;
             subjectSelect.appendChild(opt);
+        });
+
+        // Modal Functions
+        function closeModal() {
+            document.getElementById('noticeModal').classList.remove('active');
+        }
+
+        // Show modal on page load
+        window.addEventListener('load', () => {
+            document.getElementById('noticeModal').classList.add('active');
         });
 
 
