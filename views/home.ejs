@@ -135,6 +135,28 @@
             text-align: left;
         }
 
+        /* Closure Notice Banner - Large Overlay */
+        .closure-banner {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            font-family: 'Inter', sans-serif;
+            right: 0;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            border-top: 4px solid #64748b;
+            border-bottom: 4px solid #64748b;
+            color: #1e293b;
+            padding: 48px 32px;
+            font-size: 32px;
+            font-weight: 800;
+            text-align: center;
+            letter-spacing: 0.02em;
+            z-index: 100;
+            width: 100%;
+            backdrop-filter: blur(8px);
+        }
+
         .form-group {
             margin-bottom: 20px;
         }
@@ -325,6 +347,7 @@
             <header>
                 <h1>Registration of LA/CA courses</h1>
                 <p class="subtitle">Semester 2026</p>
+
                 <div class="notice-box">
                     <span style="font-weight: 800; font-size: 16px; margin-right: 8px;">!</span>
                     <span>Note: NCC students are strictly required to enroll in the <strong>NCC (SA-201)</strong> course
@@ -336,28 +359,34 @@
 
             <form id="regForm">
 
+                <!-- Closure Notice Banner - Overlays the form -->
+                <div class="closure-banner">
+                    Registrations have been closed
+                </div>
+
                 <div class="form-group">
                     <label for="name">Full Name</label>
-                    <input type="text" name="name" id="name" autocomplete="name" required placeholder="Your Name">
+                    <input type="text" name="name" id="name" autocomplete="name" required placeholder="Your Name"
+                        disabled>
                 </div>
 
                 <div class="form-group">
                     <label for="email">College Email</label>
                     <input type="email" name="email" id="email" autocomplete="email" required
-                        placeholder="rollno@nith.ac.in">
+                        placeholder="rollno@nith.ac.in" disabled>
                 </div>
 
                 <div class="form-group">
                     <label for="mobileNum">Mobile Number</label>
                     <input type="tel" name="mobileNum" id="mobileNum" autocomplete="tel" required
-                        placeholder="Verified Mobile Number" pattern="[0-9]{10}">
+                        placeholder="Verified Mobile Number" pattern="[0-9]{10}" disabled>
                 </div>
 
                 <div class="row form-group">
                     <div class="col">
                         <label for="gender">Gender</label>
                         <div class="select-wrapper">
-                            <select name="gender" id="gender" required>
+                            <select name="gender" id="gender" required disabled>
                                 <option value="">Select...</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
@@ -368,14 +397,14 @@
                     <div class="col">
                         <label for="rollNumber">Roll Number</label>
                         <input type="text" name="rollNumber" id="rollNumber" required placeholder="24BCS..."
-                            style="text-transform: uppercase;">
+                            style="text-transform: uppercase;" disabled>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="branch">Branch</label>
                     <div class="select-wrapper">
-                        <select name="branch" id="branch" required>
+                        <select name="branch" id="branch" required disabled>
                             <option value="">Select your Branch</option>
                             <!-- Options populated by JS -->
                         </select>
@@ -385,14 +414,14 @@
                 <div class="form-group">
                     <label for="subjectCode">Activity Selection</label>
                     <div class="select-wrapper">
-                        <select name="subjectCode" id="subjectCode" required>
+                        <select name="subjectCode" id="subjectCode" required disabled>
                             <option value="">Select Activity...</option>
                             <!-- Options populated by JS -->
                         </select>
                     </div>
                 </div>
 
-                <button type="submit" id="submitBtn">Confirm Registration</button>
+                <button type="submit" id="submitBtn" disabled>Confirm Registration</button>
             </form>
 
             <!-- Footer Section -->
@@ -419,7 +448,6 @@
             'Engineering Physics',
             'Materials Science and Engineering',
             'Civil Engineering',
-            'Architecture'
         ];
 
         const subjectNames = {
@@ -427,11 +455,8 @@
             'SA-202': 'National Service Scheme (NSS)',
             'SA-203': 'Yoga and Meditation',
             'SA-204': 'Sports Activities',
-            'SA-205': 'Prayas',
             'SA-206': 'Martial Arts',
             'SA-207': 'Music, Dance, and Dramatics',
-            'SA-208': 'Social Service and Discipline',
-            'SA-209': 'Photography and Creative Art',
             'SA-210': 'Swachh Bharat Abhiyan',
             'SA-211': 'Nasha Mukti Abhiyan',
             'SA-212': 'Horticulture',

@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
 
-route.get('/verify-email', async (req, res) => {
+route.get('/very-eail', async (req, res) => {
     const { token } = req.query;
     console.log('You enetred the route gigg');
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
