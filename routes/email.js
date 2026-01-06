@@ -16,6 +16,7 @@ route.get('/verify-email', async (req, res) => {
             return res.render('verify-email', { 
                 success: false,
                 message: "Invalid response" 
+                
             });
         };
         const existingUser = await Form.findOne({ email: decoded.email });
