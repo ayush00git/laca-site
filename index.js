@@ -30,6 +30,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
     res.render('home');
 })
+
+app.get('/api/config', (req, res) => {
+    res.json({ subjectApiPath: `/${process.env.PRIVATE_URL}/subject/api/all` });
+});
+
 app.use('/form', formRoute);
 app.use(`/${process.env.PRIVATE_URL}/subject`, subjectRoute);
 app.use('/email', emailRoute);

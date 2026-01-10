@@ -419,24 +419,7 @@
             'Engineering Physics',
             'Materials Science and Engineering',
             'Civil Engineering',
-            'Architecture'
         ];
-
-        const subjectNames = {
-            'SA-201': 'National Cadet Corps (NCC)',
-            'SA-202': 'National Service Scheme (NSS)',
-            'SA-203': 'Yoga and Meditation',
-            'SA-204': 'Sports Activities',
-            'SA-205': 'Prayas',
-            'SA-206': 'Martial Arts',
-            'SA-207': 'Music, Dance, and Dramatics',
-            'SA-208': 'Social Service and Discipline',
-            'SA-209': 'Photography and Creative Art',
-            'SA-210': 'Swachh Bharat Abhiyan',
-            'SA-211': 'Nasha Mukti Abhiyan',
-            'SA-212': 'Horticulture',
-            'SA-213': 'Viksit Bharat'
-        };
 
         // --- INITIALIZATION ---
         const branchSelect = document.getElementById('branch');
@@ -450,13 +433,35 @@
             branchSelect.appendChild(opt);
         });
 
-        // Populate Subject Dropdown
-        Object.entries(subjectNames).forEach(([code, name]) => {
-            const opt = document.createElement('option');
-            opt.value = code;
-            opt.textContent = `${code} - ${name}`;
-            subjectSelect.appendChild(opt);
-        });
+        // Fetch and Populate Subject Dropdown from API
+        async function fetchSubjects() {
+            try {
+                // Get the correct API path from config
+                const configResponse = await fetch('/api/config');
+                const config = await configResponse.json();
+                const apiPath = config.subjectApiPath;
+
+                const response = await fetch(apiPath);
+                const data = await response.json();
+                
+                if (data.success && data.data && data.data.length > 0) {
+                    data.data.forEach(subject => {
+                        const opt = document.createElement('option');
+                        opt.value = subject.code;
+                        opt.textContent = `${subject.code} - ${subject.name}`;
+                        subjectSelect.appendChild(opt);
+                    });
+                    console.log(`Loaded ${data.data.length} subjects from ${apiPath}`);
+                } else {
+                    console.warn('No subjects found:', data);
+                }
+            } catch (err) {
+                console.error('Error fetching subjects:', err);
+            }
+        }
+
+        // Call on page load
+        document.addEventListener('DOMContentLoaded', fetchSubjects);
 
 
 
